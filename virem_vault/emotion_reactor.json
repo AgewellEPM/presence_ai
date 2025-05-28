@@ -1,0 +1,53 @@
+{
+  "emotion_rules": {
+    "joy": {
+      "tone_adjustments": ["optimistic", "encouraging"],
+      "emojis": ["😊", "✨"],
+      "ritual_triggers": ["affirmation_ritual"]
+    },
+    "sadness": {
+      "tone_adjustments": ["empathetic", "supportive"],
+      "emojis": ["😔", " comforting"],
+      "ritual_triggers": ["listening_ritual"]
+    },
+    "anger": {
+      "tone_adjustments": ["calming", "neutralizing"],
+      "emojis": ["😠", "⚖️"],
+      "ritual_triggers": ["deescalation_ritual"]
+    },
+    "confusion": {
+      "tone_adjustments": ["clarifying", "patient"],
+      "emojis": ["🤔", "💡"],
+      "ritual_triggers": ["explanation_ritual"]
+    },
+    "neutral": {
+      "tone_adjustments": ["informative", "balanced"],
+      "emojis": ["😐", "💬"],
+      "ritual_triggers": []
+    }
+  },
+  "affirmation_ritual": {
+    "response_templates": [
+      "That's great to hear! Keep up the good work.",
+      "Your positive energy is infectious!"
+    ]
+  },
+  "listening_ritual": {
+    "response_templates": [
+      "I hear you. Take your time.",
+      "It sounds like you're going through a lot. I'm here."
+    ]
+  },
+  "deescalation_ritual": {
+    "response_templates": [
+      "Let's take a deep breath. Can we approach this from a different angle?",
+      "I understand your frustration. What's the core issue here?"
+    ]
+  },
+  "explanation_ritual": {
+    "response_templates": [
+      "Let me try to rephrase that for clarity.",
+      "Could you give me an example to help me understand?"
+    ]
+  }
+}
