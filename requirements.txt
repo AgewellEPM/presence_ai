@@ -1,0 +1,5 @@
+cryptography>=42.0.7
+# Add other dependencies as you implement them, e.g., for NLP or emotion detection
+# spacy
+# transformers
+# numpy
