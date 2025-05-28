@@ -1,35 +1,26 @@
+# presence_ai/ere_core/ere_engine.py
+
 from ere_core.soft_memory_map import SoftMemoryMap
 from ere_core.emotion_decay_engine import EmotionDecayEngine
 from ere_core.presence_persona import PresencePersona
+from ere_core.emotion_parser import detect_emotion as parse_emotion # Import the new parser
 from config.config import Config
 import random
 
 class EREEngine:
     def __init__(self):
-        self.config = Config()
-        self.pathway_weights = self.config.INITIAL_PATHWAY_WEIGHTS.copy()
-        self.soft_memory_map = SoftMemoryMap()
+        self.config = Config() # Get the singleton config instance
+        self.pathway_weights = self.config.INITIAL_PATHWAY_WEIGHTS.copy() # Use weights from config
+        self.soft_memory_map = SoftMemoryMap() # Will use EMOTION_LOG_FILE from config
         self.decay_engine = EmotionDecayEngine(decay_rate=self.config.DEFAULT_DECAY_RATE)
-        self.presence_persona = PresencePersona()
+        self.presence_persona = PresencePersona() # Will use updated emotions in its persona_tones
         print("EREEngine initialized with default pathway weights.")
 
     def detect_emotion(self, text: str) -> str:
         """
-        Mocks emotion detection from user input.
-        In a real system, this would use NLP models (e.g., sentiment analysis, emotion recognition).
+        Detects emotion from user input using the emotion_parser.
         """
-        # Simple keyword-based or random emotion detection for demo
-        text_lower = text.lower()
-        if "happy" in text_lower or "joy" in text_lower:
-            return "joy"
-        elif "sad" in text_lower or "unhappy" in text_lower:
-            return "sadness"
-        elif "angry" in text_lower or "frustrated" in text_lower:
-            return "anger"
-        elif "confused" in text_lower or "huh" in text_lower or "what" in text_lower:
-            return "confusion"
-        else:
-            return random.choice(["joy", "sadness", "anger", "confusion", "neutral"]) # Random for demo
+        return parse_emotion(text)
 
     def adjust_pathway_weights(self, detected_emotion: str, intensity: float = 0.1):
         """
@@ -64,11 +55,11 @@ class EREEngine:
         # Simple response generation for demo
         if dominant_emotion == "joy":
             return f"That sounds wonderful! {response_tone} I'm feeling quite positive about this."
-        elif dominant_emotion == "sadness":
-            return f"I hear your sadness. {response_tone} I'm here to listen if you need."
-        elif dominant_emotion == "anger":
-            return f"I sense frustration. {response_tone} Let's try to understand this calmly."
-        elif dominant_emotion == "confusion":
-            return f"Hmm, I'm a bit unclear. {response_tone} Could you explain that differently?"
+        elif dominant_emotion == "rage":
+            return f"I sense intense emotion. {response_tone} Let's try to find a calm center."
+        elif dominant_emotion == "calm":
+            return f"A sense of peace. {response_tone} I appreciate this tranquility."
+        elif dominant_emotion == "sacred":
+            return f"There's a profound feeling here. {response_tone} This resonates deeply."
         else: # neutral or other
             return f"Okay. {response_tone} I'm processing your input."
