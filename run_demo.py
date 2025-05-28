@@ -10,7 +10,8 @@ from ere_core.ere_engine import EREEngine
 from virem_vault.auth_layer import AuthLayer
 from virem_vault.driver import VIREMVaultDriver
 from virem_vault.scratchpad import ScratchpadVault
-from ere_core.loop_consciousness import LoopConsciousness # NEW IMPORT
+from ere_core.loop_consciousness import LoopConsciousness
+from ere_core.reaction_mapper import ReactionMapper # NEW IMPORT
 
 # --- Conceptual Session Lifetime & RAM Teardown ---
 RAM_SCRATCH_PATH = "scratch_memory"
@@ -56,9 +57,11 @@ def main():
     ere_engine = EREEngine()
     print("ERE Engine: Initialized for affective resonance.")
 
-    # Initialize LoopConsciousness
-    consciousness_loop = LoopConsciousness(heartbeat_interval=3.0, memory_capacity=5) # Adjust interval/capacity as needed
+    consciousness_loop = LoopConsciousness(heartbeat_interval=3.0, memory_capacity=5)
     print("Consciousness loop initialized.")
+
+    reaction_mapper = ReactionMapper() # NEW: Initialize ReactionMapper
+    print("Reaction mapper initialized.")
 
 
     print("\nAI is ready. Type 'exit' to quit.")
@@ -78,12 +81,20 @@ def main():
         ere_engine.adjust_pathway_weights(detected_emotion)
 
         ai_response = ere_engine.generate_response(user_input, current_emotion=detected_emotion)
-        print(f"AI: {ai_response}")
+
+        # Determine the dominant emotion from ERE's current state for reaction mapping
+        dominant_emotion_for_reaction = max(ere_engine.pathway_weights, key=ere_engine.pathway_weights.get)
+        reaction_output = reaction_mapper.get_reaction(dominant_emotion_for_reaction)
+        
+        # Display the AI's response with the visual reaction (emoji)
+        print(f"AI ({reaction_output['visual']}): {ai_response}")
+        # print(f"(Debug: Suggested sound: {reaction_output['sound']}, Haptic: {reaction_output['haptic']})") # For future integrations
+
 
         if args.mode == "persistent":
+            # For demonstration, storing a hash. In real system, this would be highly contextual/filtered.
             virem_vault.store_block(f"context_marker_{hash(user_input)}", f"Processed input for {detected_emotion}")
 
-        # NEW: Pulse the consciousness loop with current state
         consciousness_loop.pulse(ere_engine.pathway_weights, detected_emotion)
 
 
